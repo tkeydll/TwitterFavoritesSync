@@ -1,0 +1,36 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "FOLLOW_LIST_PATH": {
+        "value": ""
+      },
+      "ScheduleAppSetting": {
+        "value": ""
+      },
+      "SOURCE_API_KEY":{
+        "value": ""
+      },
+      "SOURCE_API_SECRET":{
+        "value": ""
+      },
+      "SOURCE_ACCESS_TOKEN":{
+        "value": ""
+      },
+      "SOURCE_ACCESS_SECRET":{
+        "value": ""
+      },
+      "TARGET_API_KEY":{
+        "value": ""
+      },
+      "TARGET_API_SECRET":{
+        "value": ""
+      },
+      "TARGET_ACCESS_TOKEN":{
+        "value": ""
+      },
+      "TARGET_ACCESS_SECRET":{
+        "value": ""
+      }
+    }
+  }
