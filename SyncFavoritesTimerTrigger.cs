@@ -29,16 +29,16 @@ namespace TwitterFavoritsSync
 
 
             // Get target follows.
-            var accountList = TargetAccounts.GetList();
-            log.LogInformation($"{accountList.Count}");
+            var accountList = await TargetAccounts.GetJsonListAsync();
+            log.LogInformation($"Target count: {accountList.Count}");
 
             // Get source likes.
             var sourceClient = new TwitterClient(sourceApiKey, sourceApiSecret, sourceAccessToken, sourceAccessSecret);
             var favorites = await sourceClient.GetFavoritesAsync();
 
-
             // Get target follows tweet.
-            var targetTweet = favorites.Where(x => accountList.Contains(x.User.ScreenName));
+            var targetTweet = accountList.SelectMany(a => favorites.Where(f => f.User.Id == a.Id));
+            log.LogInformation($"Hit: {targetTweet.Count()}");
 
             if (targetTweet.Count() == 0)
             {

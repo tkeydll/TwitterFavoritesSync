@@ -32,5 +32,22 @@ namespace TwitterFavoritsSync
         {
             await _tokens.Favorites.DestroyAsync(statusId);
         }
+
+
+        public async Task<List<User>> GetAllFollowsAsync()
+        {
+            int cnt = 200;
+            var friends = await _tokens.Friends.ListAsync(count => cnt);
+            var friendsList = friends.ToList<User>();
+
+            while (friends.Count >= cnt)
+            {
+                friends = await _tokens.Friends.ListAsync(cursor => friends.NextCursor, count => cnt);
+                friendsList.AddRange(friends.ToList<User>());
+            }
+
+            return friendsList;
+        }
+
     }
 }
