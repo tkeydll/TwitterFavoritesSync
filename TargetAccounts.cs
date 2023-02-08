@@ -24,5 +24,12 @@ namespace TwitterFavoritsSync
             string jsonStr = await sr.ReadToEndAsync();
             return JsonConvert.DeserializeObject<List<FollowUser>>(jsonStr);
         }
+
+        public static async Task SaveTargetListAsync(string listJson)
+        {
+            string jsonPath = Environment.GetEnvironmentVariable("FOLLOW_LIST_PATH");
+            using var sw = new StreamWriter(jsonPath);
+            await sw.WriteLineAsync(listJson);
+        }
     }
 }
