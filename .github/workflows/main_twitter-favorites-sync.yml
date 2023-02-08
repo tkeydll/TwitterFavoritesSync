@@ -40,3 +40,10 @@ jobs:
           slot-name: 'Production'
           package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_AFC5699EE1184B1BB8E5898268B6AE80 }}
+
+      - name: Copy Directory
+        uses: MadaraUchiha/copy-action@0.0.1
+        with:
+          source: data
+          target: data
+
