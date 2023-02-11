@@ -18,7 +18,7 @@ namespace TwitterFavoritsSync
         private string targetAccessSecret = Environment.GetEnvironmentVariable("TARGET_ACCESS_SECRET");
 
         [FunctionName("TargetAccountGetTimerTrigger")]
-        public async Task Run([TimerTrigger("0 22 * * * *")]TimerInfo myTimer, ILogger log)
+        public async Task Run([TimerTrigger("0 0 22 * * *")]TimerInfo myTimer, ILogger log)
         {
             log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
 
