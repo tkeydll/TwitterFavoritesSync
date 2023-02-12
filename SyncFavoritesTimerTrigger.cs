@@ -50,9 +50,16 @@ namespace TwitterFavoritsSync
             var targetClient = new TwitterClient(targetApiKey, targetApiSecret, targetAccessToken, targetAccessSecret);
 
             foreach (var t in targetTweet)
-            {
-                await targetClient.AddFavoritsAsync(t.Id);
-                log.LogInformation($"Add favorits in target account: {t.User.ScreenName}");
+            {   
+                try
+                {
+                    await targetClient.AddFavoritsAsync(t.Id);
+                    log.LogInformation($"Add favorits in target account: {t.User.ScreenName}");
+                }
+                catch (Exception ex)
+                {
+                    log.LogWarning(ex.ToString());
+                }
 
                 await sourceClient.RemoveFavoritsAsync(t.Id);
                 log.LogInformation($"Remove favorits in source account: {t.User.ScreenName}");

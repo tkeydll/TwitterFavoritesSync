@@ -23,14 +23,14 @@ namespace TwitterFavoritsSync
             return favorites;
         }
 
-        public async Task AddFavoritsAsync(long statusId)
+        public async Task<StatusResponse> AddFavoritsAsync(long statusId)
         {
-            await _tokens.Favorites.CreateAsync(statusId);
+            return await _tokens.Favorites.CreateAsync(statusId);
         }
 
-        public async Task RemoveFavoritsAsync(long statusId)
+        public async Task<StatusResponse> RemoveFavoritsAsync(long statusId)
         {
-            await _tokens.Favorites.DestroyAsync(statusId);
+            return await _tokens.Favorites.DestroyAsync(statusId);
         }
 
 
