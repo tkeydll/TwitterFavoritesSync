@@ -34,8 +34,16 @@ namespace TwitterFavoritsSync
             // Get string
             var value = JsonConvert.SerializeObject(users);
 
-            // Save
-            await TargetAccounts.SaveTargetListAsync(value);
+            // Upload to Blob
+            var connectionString = Environment.GetEnvironmentVariable("BLOB_CONNECTION_STRING");
+            var containerName = Environment.GetEnvironmentVariable("BLOB_CONTAINER_NAME");
+            var fileName = Environment.GetEnvironmentVariable("BLOB_FILENAME");
+
+            var blob = new AzureBlobClient(connectionString, containerName);
+            await blob.UploadStreamAsync(value, fileName);
+
+            //Save
+            //await TargetAccounts.SaveTargetListAsync(value);
 
             log.LogInformation($"Saved.");
         }
