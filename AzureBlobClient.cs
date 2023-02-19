@@ -15,12 +15,24 @@ namespace TwitterFavoritsSync
         {
             _client = new BlobContainerClient(connectionString, containerName);
         }
+
+        /// <summary>
+        /// Upload string to Blob file.
+        /// </summary>
+        /// <param name="json">Json formatted string.</param>
+        /// <param name="fileName">Filename</param>
+        /// <returns></returns>        
         public async Task UploadStreamAsync(string json, string fileName)
         {
             BlobClient blobClient = _client.GetBlobClient(fileName);
             await blobClient.UploadAsync(BinaryData.FromString(json), overwrite: true);
         }
 
+        /// <summary>
+        /// Get json string from blob file.
+        /// </summary>
+        /// <param name="fileName">Filename</param>
+        /// <returns></returns>
         public async Task<string> GetFollowListAsync(string fileName)
         {
             BlobClient blobClient = _client.GetBlobClient(fileName);

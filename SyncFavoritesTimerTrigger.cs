@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace TwitterFavoritsSync
 {
@@ -21,6 +23,11 @@ namespace TwitterFavoritsSync
         private string targetAccessToken = Environment.GetEnvironmentVariable("TARGET_ACCESS_TOKEN");
         private string targetAccessSecret = Environment.GetEnvironmentVariable("TARGET_ACCESS_SECRET");
 
+        // Target List
+        string connectionString = Environment.GetEnvironmentVariable("BLOB_CONNECTION_STRING");
+        string containerName = Environment.GetEnvironmentVariable("BLOB_CONTAINER_NAME");
+        string fileName = Environment.GetEnvironmentVariable("BLOB_FILENAME");
+
 
         [FunctionName("SyncFavoritesTimerTrigger")]
         public async Task Run([TimerTrigger("%ScheduleAppSetting%")]TimerInfo myTimer, ILogger log)
@@ -29,7 +36,8 @@ namespace TwitterFavoritsSync
 
 
             // Get target follows.
-            var accountList = await TargetAccounts.GetJsonListAsync();
+            var jsonStr = await GetListAsync();
+            var accountList = JsonConvert.DeserializeObject<List<FollowUser>>(jsonStr);
             log.LogInformation($"Target count: {accountList.Count}");
 
             // Get source likes.
@@ -67,6 +75,16 @@ namespace TwitterFavoritsSync
 
             log.LogInformation($"Execute finished at: {DateTime.Now}");
 
+        }
+
+        /// <summary>
+        /// Get list.
+        /// </summary>
+        /// <returns></returns>
+        private async Task<string> GetListAsync()
+        {
+            var blob = new AzureBlobClient(connectionString, containerName);
+            return await blob.GetFollowListAsync(fileName);
         }
     }
 }
